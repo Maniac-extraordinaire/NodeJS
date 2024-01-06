@@ -1,20 +1,11 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title #{docTitle}
-        <link rel="stylesheet" href="/Public/css/product.css">
-        <link rel="stylesheet" href="/Public/css/main.css">
-    body 
-        header.main-header
-            nav.main-header_nav     
-                ul.main-header_item_list
-                    li.main-header_item
-                        a.active(href="/") Shop 
-                    li.main-header_item
-                        a(href="/admin/add-product") Add Product
-        main
+extend layouts/main-layout.pug
+
+block styles
+    <link rel="stylesheet" href="/Public/css/product.css">
+    <link rel="stylesheet" href="/Public/css/main.css">
+
+block content
+    main
             if prods.length>0
                 .grid
                     each product in prods
@@ -30,3 +21,5 @@ html(lang="en")
                         button.btn Add to Cart
             else
                 h1 No Products
+
+// Path: E-Shop/views/add-product.pug
