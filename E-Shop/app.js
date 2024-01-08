@@ -1,33 +1,40 @@
-const express =require('express');
+const express = require("express");
 
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
-const path = require('path');
+const path = require("path");
 
 const app = express();
 
-app.set('view engine', 'pug');
-app.set('views');
+const expresHbs = require("express-handlebars");
 
-const adminData = require('./routes/admin');
+const rootDir = require("./util/paths");
 
-const shopRoutes = require('./routes/shop');
+app.engine(
+  "handlebars",
+  expresHbs({
+    layoutsDir: path.join(rootDir, "views", "layouts"),
+    defaultLayout: "main-layout",
+    extname: "handlebars",
+  })
+);
 
-// app.get('/favicon.ico', (req, res) => res.status(204));
+app.set("view engine", "handlebars");
+// app.set("view engine", "pug");
+app.set("views");
 
-// app.use('/', (req, res, next)=>{
-//     console.log('This always Runs!');
-//     next();
-// });
+const adminData = require("./routes/admin");
 
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static(path.join(__dirname, )));
+const shopRoutes = require("./routes/shop");
 
-app.use(('/admin'), adminData.routes);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(rootDir, "public")));
+
+app.use("/admin", adminData.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-    res.status(404).render('404', {pageTitle:'Page Not found'});
+  res.status(404).render("404", { pageTitle: "Page Not found" });
 });
 
-app.listen(3000)
+app.listen(3000);
